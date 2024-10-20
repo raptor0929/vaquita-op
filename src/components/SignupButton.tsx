@@ -1,5 +1,6 @@
-'use client';
-import WalletWrapper from './WalletWrapper';
+"use client";
+import React from "react";
+import WalletWrapper from "./WalletWrapper";
 
 export default function SignupButton() {
   return (

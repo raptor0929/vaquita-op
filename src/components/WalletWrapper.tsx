@@ -1,11 +1,12 @@
-'use client';
+"use client";
+import React from "react";
 import {
   Address,
   Avatar,
   EthBalance,
   Identity,
   Name,
-} from '@coinbase/onchainkit/identity';
+} from "@coinbase/onchainkit/identity";
 import {
   ConnectWallet,
   Wallet,
@@ -14,7 +15,7 @@ import {
   WalletDropdownDisconnect,
   WalletDropdownFundLink,
   WalletDropdownLink,
-} from '@coinbase/onchainkit/wallet';
+} from "@coinbase/onchainkit/wallet";
 
 type WalletWrapperParams = {
   text?: string;
