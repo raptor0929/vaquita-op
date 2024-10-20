@@ -31,6 +31,10 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "contracts/lib/**/*.test.ts",
+    "contracts/lib/**/*.spec.ts",
+    "contracts/lib/**/__tests__/**",
+    "contracts/lib/**/test/**"
   ]
 }

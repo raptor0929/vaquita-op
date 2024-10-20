@@ -12,6 +12,7 @@ export default defineConfig({
         '.next/**',
         'public/**',
         'node_modules/**',
+        'contracts/lib/**', // Added to exclude all files in contracts/lib
       ],
       reportOnFailure: true,
       thresholds: {
@@ -22,7 +23,15 @@ export default defineConfig({
       },
     },
     environment: 'jsdom',
-    exclude: ['**/node_modules/**', '.next/**', 'public/**'],
+    exclude: [
+      '**/node_modules/**',
+      '.next/**',
+      'public/**',
+      'contracts/lib/**/*.test.{js,jsx,ts,tsx}',
+      'contracts/lib/**/*.spec.{js,jsx,ts,tsx}',
+      'contracts/lib/**/__tests__/**',
+      'contracts/lib/**/test/**',
+    ],
     setupFiles: ['./vitest.setup.ts'],
     globals: true,
   },
