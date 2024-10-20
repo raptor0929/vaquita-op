@@ -1,11 +1,12 @@
-// TODO: replace with base wallet
-// import { ClusterUiSelect } from '@/components/cluster/cluster-ui';
-// import { WalletButton } from '@/components/solana/solana-provider';
+import LoginButton from "@/components/LoginButton";
+import SignupButton from "@/components/SignupButton";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import { useAccount } from "wagmi";
 
 const MainTabsHeader = () => {
+  const { address } = useAccount();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -38,8 +39,8 @@ const MainTabsHeader = () => {
           </span>
         </div>
         <div className="flex-none space-x-1 flex wallets-buttons">
-          {/* <WalletButton />
-          <ClusterUiSelect /> */}
+          <SignupButton />
+          {!address && <LoginButton />}
         </div>
       </div>
     </div>

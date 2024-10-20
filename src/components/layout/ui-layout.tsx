@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { includeApi } from '@/helpers/api';
-import { ReactNode } from 'react';
-import Navbar from '../global/Navbar/Navbar';
+import { includeApi } from "@/helpers/api";
+import { ReactNode } from "react";
+import Navbar from "../global/Navbar/Navbar";
 
 declare global {
   interface Window {
@@ -10,8 +10,8 @@ declare global {
   }
 }
 
-if (typeof window !== 'undefined') {
-  console.log('updateStartsOnTimestamp loaded :P');
+if (typeof window !== "undefined") {
+  console.log("updateStartsOnTimestamp loaded :P");
   window.__TEST__ = {};
   window.__TEST__.updateStartsOnTimestamp = async (
     groupId: string,
@@ -20,10 +20,10 @@ if (typeof window !== 'undefined') {
     const response = await fetch(
       includeApi(`/group/${groupId}/set-timestamp`),
       {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({ startsOnTimestamp }),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -54,7 +54,7 @@ export function UiLayout({
             <ClusterUiSelect />
           </div>
         </div> */}
-        <div className="flex flex-col flex-1 mx-2 overflow-y-auto">
+        <div className="h-full flex flex-col flex-1 mx-2 overflow-y-auto">
           {children}
         </div>
         <div className="bg-gray-900">

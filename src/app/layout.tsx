@@ -6,6 +6,7 @@ import "@coinbase/onchainkit/styles.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import dynamic from "next/dynamic";
 import { UiLayout } from "src/components/layout/ui-layout";
+import { NextUIProvider } from "@nextui-org/react";
 
 const OnchainProviders = dynamic(
   () => import("src/components/OnchainProviders"),
@@ -42,9 +43,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex items-center justify-center">
-        <OnchainProviders>
-          <UiLayout links={links}>{children}</UiLayout>
-        </OnchainProviders>
+        <NextUIProvider className="h-full w-full">
+          <UiLayout links={links}>
+            <OnchainProviders>{children}</OnchainProviders>
+          </UiLayout>
+        </NextUIProvider>
       </body>
     </html>
   );

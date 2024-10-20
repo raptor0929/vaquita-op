@@ -1,34 +1,34 @@
-'use client';
-import MainTabsHeader from '@/components/global/Header/MainTabsHeader';
-import InfoCard from '@/components/global/InfoCard/InfoCard';
+"use client";
+import MainTabsHeader from "@/components/global/Header/MainTabsHeader";
+import InfoCard from "@/components/global/InfoCard/InfoCard";
 // import { Connection, PublicKey } from '@solana/web3.js';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useAccount } from 'wagmi';
+import React, { useEffect, useMemo, useState } from "react";
+import { useAccount } from "wagmi";
 
 // Validación de variables de entorno
-if (!process.env.NEXT_PUBLIC_ANCHOR_PROVIDER_URL) {
-  throw new Error(
-    'La variable NEXT_PUBLIC_ANCHOR_PROVIDER_URL no está definida en el archivo .env',
-  );
-}
-if (!process.env.NEXT_PUBLIC_USDC_MINT_ADDRESS) {
-  throw new Error(
-    'La variable NEXT_PUBLIC_USDC_MINT_ADDRESS no está definida en el archivo .env',
-  );
-}
+// if (!process.env.NEXT_PUBLIC_ANCHOR_PROVIDER_URL) {
+//   throw new Error(
+//     'La variable NEXT_PUBLIC_ANCHOR_PROVIDER_URL no está definida en el archivo .env',
+//   );
+// }
+// if (!process.env.NEXT_PUBLIC_USDC_MINT_ADDRESS) {
+//   throw new Error(
+//     'La variable NEXT_PUBLIC_USDC_MINT_ADDRESS no está definida en el archivo .env',
+//   );
+// }
 
-const USDC_MINT_ADDRESS = process.env.NEXT_PUBLIC_USDC_MINT_ADDRESS;
+// const USDC_MINT_ADDRESS = process.env.NEXT_PUBLIC_USDC_MINT_ADDRESS;
 
 const Page = () => {
   const { address } = useAccount();
-  const [ formattedAddress, setFormattedAddress ] = useState<string | null>(null);
-  const [ usdcBalance, setUsdcBalance ] = useState<number | null>(null);
-  
+  const [formattedAddress, setFormattedAddress] = useState<string | null>(null);
+  const [usdcBalance, setUsdcBalance] = useState<number | null>(null);
+
   const connection = useMemo(
     () => null, // new Connection(process.env.NEXT_PUBLIC_ANCHOR_PROVIDER_URL!),
-    [], // Solo se crea una vez ya que la URL no cambia
+    [] // Solo se crea una vez ya que la URL no cambia
   );
-  
+
   useEffect(() => {
     if (address) {
       // setFormattedAddress(
@@ -53,14 +53,13 @@ const Page = () => {
       //     }
       //   });
       // };
-      
       // getTokenAccounts();
     } else {
       setFormattedAddress(null);
       setUsdcBalance(null);
     }
-  }, [ address, connection ]);
-  
+  }, [address, connection]);
+
   if (!address) {
     return (
       <>
@@ -71,7 +70,7 @@ const Page = () => {
       </>
     );
   }
-  
+
   return (
     <>
       <div className="h-20 ">
