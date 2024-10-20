@@ -1,19 +1,6 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/coinbase/onchainkit/main/site/docs/public/logo/v0-27.png">
-    <img alt="OnchainKit logo vibes" src="https://raw.githubusercontent.com/coinbase/onchainkit/main/site/docs/public/logo/v0-27.png" width="auto">
-  </picture>
-</p>
+# Vaquita
 
-# Onchain App Template
-
-An Onchain App Template build with [OnchainKit](https://onchainkit.xyz), and ready to be deployed to Vercel.
-
-Play with it live on https://onchain-app-template.vercel.app
-
-Have fun! ⛵️
-
-<br />
+Sepolia Base contract: [0xe5a822FC8D92FBFb0E1f0ED1B096E3318B6D4702](https://sepolia.basescan.org/address/0xe5a822fc8d92fbfb0e1f0ed1b096e3318b6d4702)
 
 ## Setup
 
