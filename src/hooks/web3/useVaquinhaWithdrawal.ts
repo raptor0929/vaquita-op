@@ -1,50 +1,45 @@
-import { useProgramMethods } from '@/components/vaquinha/vaquinha-data-access';
 import { GroupResponseDTO } from '@/types';
 import { useCallback } from 'react';
 
 export const useVaquinhaWithdrawal = () => {
-  const { withdrawTurn, withdrawCollateral } = useProgramMethods();
-
+  
   const withdrawalCollateral = useCallback(
     async (
-      group: GroupResponseDTO
+      group: GroupResponseDTO,
     ): Promise<{ tx: string; error: any; success: boolean }> => {
-      const tokenMintAddress = '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU';
-      const { tx, error } = await withdrawCollateral(
-        group.id,
-        tokenMintAddress
-      );
-
+      const tx = 'test';
+      const error = false;
+      
       return { tx: tx || '', error, success: !!tx && !error };
     },
-    [withdrawCollateral]
+    [],
   );
-
+  
   const withdrawalEarnedRound = useCallback(
     async (
-      group: GroupResponseDTO
+      group: GroupResponseDTO,
     ): Promise<{ tx: string; error: any; success: boolean }> => {
-      const tokenMintAddress = '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU';
-      const { tx, error } = await withdrawTurn(group.id, tokenMintAddress);
-
+      const tx = 'test';
+      const error = false;
+      
       return { tx: tx || '', error, success: !!tx && !error };
     },
-    [withdrawTurn]
+    [],
   );
-
+  
   const withdrawalEarnedInterest = useCallback(
     async (
       group: GroupResponseDTO,
-      amount: number
+      amount: number,
     ): Promise<{ tx: string; error: any; success: boolean }> => {
       const tx = 'testing';
       const error = '';
-      const success = true;
-      return { tx, error, success };
+      
+      return { tx: tx || '', error, success: !!tx && !error };
     },
-    []
+    [],
   );
-
+  
   return {
     withdrawalEarnedRound,
     withdrawalCollateral,
