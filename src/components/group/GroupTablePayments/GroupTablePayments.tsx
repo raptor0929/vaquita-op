@@ -1,40 +1,41 @@
-import ButtonComponent from '@/components/global/ButtonComponent/ButtonComponent';
-import ErrorView from '@/components/global/Error/ErrorView';
-import LoadingSpinner from '@/components/global/LoadingSpinner/LoadingSpinner';
-import { getPaymentsTable } from '@/helpers';
-import { useGroup, useVaquinhaDeposit } from '@/hooks';
-import { LogLevel } from '@/types';
-import { logError } from '@/utils/log';
-import { useWallet } from '@solana/wallet-adapter-react';
-import React, { useState } from 'react';
-import { GroupTablePaymentsProps } from './GroupTablePayments.types';
+import ButtonComponent from "@/components/global/ButtonComponent/ButtonComponent";
+import ErrorView from "@/components/global/Error/ErrorView";
+import LoadingSpinner from "@/components/global/LoadingSpinner/LoadingSpinner";
+import { getPaymentsTable } from "@/helpers";
+import { useGroup, useVaquinhaDeposit } from "@/hooks";
+import { LogLevel } from "@/types";
+import { logError } from "@/utils/log";
+// TODO: REPLACE WITH BASE WALLET
+// import { useWallet } from '@solana/wallet-adapter-react';
+import React, { useState } from "react";
+import { GroupTablePaymentsProps } from "./GroupTablePayments.types";
 
 export default function GroupTablePayments({
   group,
   refetch,
 }: GroupTablePaymentsProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const { publicKey } = useWallet();
+  // const { publicKey } = useWallet();
   const { depositRoundPayment } = useVaquinhaDeposit();
   const { depositGroupPayment } = useGroup();
 
   if (isLoading) {
     return <LoadingSpinner />;
   }
-  if (!publicKey) {
-    return <ErrorView />;
-  }
+  // if (!publicKey) {
+  //   return <ErrorView />;
+  // }
 
   const { items } = getPaymentsTable(group);
 
   const getStatusType = (status: string): string => {
     switch (status) {
-      case 'Pay':
-        return 'success';
-      case 'Pending':
-        return 'muted';
+      case "Pay":
+        return "success";
+      case "Pending":
+        return "muted";
       default:
-        return 'disabled';
+        return "disabled";
     }
   };
 
@@ -45,9 +46,10 @@ export default function GroupTablePayments({
       const { tx, error, success } = await depositRoundPayment(group, turn);
       if (!success) {
         logError(LogLevel.INFO)(error);
-        throw new Error('transaction error');
+        throw new Error("transaction error");
       }
-      await depositGroupPayment(group.id, publicKey, tx, round, amount);
+      // await depositGroupPayment(group.id, publicKey, tx, round, amount);
+      await depositGroupPayment(group.id, "", tx, round, amount);
       await refetch();
     } catch (error) {
       logError(LogLevel.INFO)(error);
@@ -75,11 +77,11 @@ export default function GroupTablePayments({
             </div>
             <div className="self-center">
               {round === group.myPosition
-                ? '-'
+                ? "-"
                 : new Date(paymentDeadlineTimestamp).toDateString()}
             </div>
             <div className="self-center">
-              {status === 'Paid' ? (
+              {status === "Paid" ? (
                 <span className="text-success-green">Paid</span>
               ) : round === group.myPosition ? (
                 "It's your round"
@@ -88,7 +90,7 @@ export default function GroupTablePayments({
                   label={status}
                   type={getStatusType(status)}
                   onClick={() => handleClick(round, i)}
-                  disabled={status !== 'Pay'}
+                  disabled={status !== "Pay"}
                 />
               )}
             </div>

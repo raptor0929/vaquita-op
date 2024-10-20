@@ -1,7 +1,7 @@
-import Summary from '@/components/Summary/Summary';
-import { GroupCrypto, GroupStatus } from '@/types';
-import { getRelativeTime } from '@/utils/time';
-import React from 'react';
+import Summary from "@/components/Summary/Summary";
+import { GroupCrypto, GroupStatus } from "@/types";
+import { getRelativeTime } from "@/utils/time";
+import React from "react";
 
 export const GroupSummary = ({
   crypto,
@@ -26,32 +26,32 @@ export const GroupSummary = ({
     <Summary
       itemsSummary={[
         {
-          title: 'Crypto',
+          title: "Crypto",
           result: crypto,
         },
         {
-          title: 'Group name',
+          title: "Group name",
           result: name,
         },
         {
-          title: 'Amount',
+          title: "Amount",
           result: amount,
         },
         {
-          title: 'Collateral',
+          title: "Collateral",
           result: amount * totalMembers,
         },
         {
-          title: 'Members',
+          title: "Members",
           result: totalMembers,
         },
         {
-          title: 'Payment period',
+          title: "Payment period",
           result: period,
         },
         {
           title:
-            !status || status === GroupStatus.PENDING ? 'Starts In' : 'Started',
+            !status || status === GroupStatus.PENDING ? "Starts In" : "Started",
           result: getRelativeTime(startsIn),
         },
       ]}

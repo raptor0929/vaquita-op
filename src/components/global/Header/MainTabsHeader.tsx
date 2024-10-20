@@ -1,8 +1,9 @@
-import { ClusterUiSelect } from '@/components/cluster/cluster-ui';
-import { WalletButton } from '@/components/solana/solana-provider';
-import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-import React from 'react';
+// TODO: replace with base wallet
+// import { ClusterUiSelect } from '@/components/cluster/cluster-ui';
+// import { WalletButton } from '@/components/solana/solana-provider';
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import React from "react";
 
 const MainTabsHeader = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const MainTabsHeader = () => {
 
   return (
     <div className="text-primary-200 text-3xl text-center flex justify-around items-center gap-2 pt-4 pb-2 h-14">
-      {pathname.split('/').length > 2 && (
+      {pathname.split("/").length > 2 && (
         <button onClick={handleBack}>
           <Image
             src="/icons/back-arrow.svg"
@@ -37,8 +38,8 @@ const MainTabsHeader = () => {
           </span>
         </div>
         <div className="flex-none space-x-1 flex wallets-buttons">
-          <WalletButton />
-          <ClusterUiSelect />
+          {/* <WalletButton />
+          <ClusterUiSelect /> */}
         </div>
       </div>
     </div>
