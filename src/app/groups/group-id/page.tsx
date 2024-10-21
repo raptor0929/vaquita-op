@@ -14,15 +14,16 @@ import { useVaquinhaWithdrawal } from '@/hooks/web3/useVaquinhaWithdrawal';
 import { GroupResponseDTO, GroupStatus, LogLevel } from '@/types';
 import { showAlert } from '@/utils/commons';
 import { logError } from '@/utils/log';
-import { useAccount } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
+import { useAccount } from 'wagmi';
 
 const GroupDetailPage = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const { groupId } = useParams();
+  const [ isLoading, setIsLoading ] = useState(false);
+  const searchParams = useSearchParams();
+  const groupId = searchParams.get('groupId');
   const { address } = useAccount();
   const { depositCollateralAndJoin } = useVaquinhaDeposit();
   const {
@@ -49,12 +50,12 @@ const GroupDetailPage = () => {
     content: GroupResponseDTO;
   }>({
     enabled: !!address,
-    queryKey: ['group', address],
+    queryKey: [ 'group', address ],
     queryFn: () => getGroup(groupId as string, address!),
   });
-
+  
   const loading = isPendingData || isLoadingData || isFetchingData;
-
+  
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -64,21 +65,21 @@ const GroupDetailPage = () => {
   if (!address) {
     return <ErrorView />;
   }
-
+  
   const group = data.content;
   const isActive = group.status === GroupStatus.ACTIVE;
   const isConcluded = group.status === GroupStatus.CONCLUDED;
   const step1 = !!group.myDeposits[0]?.successfullyDeposited;
   const step2 = step1 && group.slots === 0;
   const step3 = step1 && step2 && isActive;
-
+  
   const handleDepositCollateral = async () => {
     setIsLoading(true);
     try {
       const joinedGroup = await joinGroup(group.id, address);
       const amount = joinedGroup.collateralAmount;
       const { tx, error, success } = await depositCollateralAndJoin(
-        joinedGroup
+        joinedGroup,
       );
       if (!success) {
         logError(LogLevel.INFO)(error);
@@ -92,7 +93,7 @@ const GroupDetailPage = () => {
     }
     setIsLoading(false);
   };
-
+  
   const handleWithdrawEarnedRound = async () => {
     setIsLoading(true);
     try {
@@ -109,14 +110,14 @@ const GroupDetailPage = () => {
     }
     setIsLoading(false);
   };
-
+  
   const handleWithdrawEarnedInterest = async () => {
     setIsLoading(true);
     try {
       const amount = 0;
       const { tx, error, success } = await withdrawalEarnedInterest(
         group,
-        amount
+        amount,
       );
       if (!success) {
         logError(LogLevel.INFO)(error);
@@ -129,7 +130,7 @@ const GroupDetailPage = () => {
     }
     setIsLoading(false);
   };
-
+  
   const handleWithdrawCollateral = async () => {
     setIsLoading(true);
     try {
@@ -146,17 +147,17 @@ const GroupDetailPage = () => {
     }
     setIsLoading(false);
   };
-
+  
   const handleNavigateToPayments = () => {
     router.push(`/groups/${groupId}/payments`);
   };
-
+  
   const { items, firstUnpaidItemIndex } = getPaymentsTable(group);
-
+  
   const totalPayments = Object.values(group.myDeposits).reduce(
     (sum, deposit) =>
       sum + (deposit.successfullyDeposited && deposit.round > 0 ? 1 : 0),
-    0
+    0,
   );
   const allPaymentsDone = totalPayments === group.totalMembers - 1;
   return (
@@ -174,8 +175,8 @@ const GroupDetailPage = () => {
               label2={
                 group.slots
                   ? `Pending members ${group.totalMembers - group.slots} of ${
-                      group.totalMembers
-                    }`
+                    group.totalMembers
+                  }`
                   : `Completed members (${group.totalMembers})`
               }
               value3={step3}
@@ -198,7 +199,7 @@ const GroupDetailPage = () => {
                         Payment Deadline:{' '}
                         {new Date(
                           items[firstUnpaidItemIndex]
-                            ?.paymentDeadlineTimestamp || 0
+                            ?.paymentDeadlineTimestamp || 0,
                         ).toDateString()}
                       </p>
                     </>
@@ -282,7 +283,7 @@ const GroupDetailPage = () => {
                       'Ups',
                       'The collateral cannot be withdrawn if the Vaquinha has not finished yet',
                       'info',
-                      'Understood'
+                      'Understood',
                     );
                   }
                 }}
@@ -301,14 +302,14 @@ const GroupDetailPage = () => {
           {group.status === GroupStatus.PENDING && step1 && !step2 && (
             <Message
               messageText={
-                "We are waiting for the group to be fully filled by the specified date. If the group isn't complete by then, the collateral you deposited will be returned."
+                'We are waiting for the group to be fully filled by the specified date. If the group isn\'t complete by then, the collateral you deposited will be returned.'
               }
             />
           )}
           {group.status === GroupStatus.PENDING && step1 && step2 && !step3 && (
             <Message
               messageText={
-                "The group is all set! We're just waiting for the start date to kick things off."
+                'The group is all set! We\'re just waiting for the start date to kick things off.'
               }
             />
           )}

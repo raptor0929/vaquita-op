@@ -19,20 +19,20 @@ interface Props {
 }
 
 export default function GroupCard({
-  name,
-  amount,
-  startsOnTimestamp,
-  period,
-  totalMembers,
-  slots,
-  groupId,
-  crypto,
-  status,
-}: Props) {
+                                    name,
+                                    amount,
+                                    startsOnTimestamp,
+                                    period,
+                                    totalMembers,
+                                    slots,
+                                    groupId,
+                                    crypto,
+                                    status,
+                                  }: Props) {
   const handleViewDetails = (groupId: string) => {
     console.log(groupId);
   };
-
+  
   return (
     <div className="flex justify-between bg-bg-200 px-5 py-6 rounded-lg">
       <div className="w-2/3">
@@ -68,7 +68,7 @@ export default function GroupCard({
           </div>
         )}
         <Link
-          href={`/groups/${groupId}`}
+          href={`/groups/group-id?groupId=${groupId}`}
           passHref
           style={{ display: 'contents' }}
         >
