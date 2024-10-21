@@ -14,7 +14,8 @@
     "lint:unsafe": "biome lint --write --unsafe .",
     "start": "next start",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "vercel-build": "git submodule update --init --recursive && next build"
   },
   "dependencies": {
     "@coinbase/onchainkit": "^0.33.6",
