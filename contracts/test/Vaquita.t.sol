@@ -41,9 +41,9 @@ contract VaquitaTest is Test {
 
     function testInitializeRound() public {
         vm.prank(alice);
-        vaquita.initializeRound(1, 100e18, IERC20(address(token)), 3, 7 days, 1);
+        vaquita.initializeRound("round1", 100e18, IERC20(address(token)), 3, 7 days, 1);
         
-        (uint256 paymentAmount, address tokenAddress, uint8 numberOfPlayers, , , , Vaquita.RoundStatus status) = vaquita.getRoundInfo(1);
+        (uint256 paymentAmount, address tokenAddress, uint8 numberOfPlayers, , , , Vaquita.RoundStatus status) = vaquita.getRoundInfo("round1");
         
         assertEq(paymentAmount, 100e18);
         assertEq(tokenAddress, address(token));
@@ -53,52 +53,52 @@ contract VaquitaTest is Test {
 
     function testAddPlayer() public {
         vm.prank(alice);
-        vaquita.initializeRound(1, 100e18, IERC20(address(token)), 3, 7 days, 1);
+        vaquita.initializeRound("round1", 100e18, IERC20(address(token)), 3, 7 days, 1);
         
         vm.prank(bob);
-        vaquita.addPlayer(1, 2);
+        vaquita.addPlayer("round1", 2);
         
-        (, , , , uint8 availableSlots, , ) = vaquita.getRoundInfo(1);
+        (, , , , uint8 availableSlots, , ) = vaquita.getRoundInfo("round1");
         assertEq(availableSlots, 1);
     }
 
     function testPayTurn() public {
         vm.prank(alice);
-        vaquita.initializeRound(1, 100e18, IERC20(address(token)), 3, 7 days, 1);
+        vaquita.initializeRound("round1", 100e18, IERC20(address(token)), 3, 7 days, 1);
         
         vm.prank(bob);
-        vaquita.addPlayer(1, 2);
+        vaquita.addPlayer("round1", 2);
         
         vm.prank(charlie);
-        vaquita.addPlayer(1, 3);
+        vaquita.addPlayer("round1", 3);
         
         vm.prank(bob);
-        vaquita.payTurn(1, 1);
+        vaquita.payTurn("round1", 1);
         
-        (, , , , , , Vaquita.RoundStatus status) = vaquita.getRoundInfo(1);
+        (, , , , , , Vaquita.RoundStatus status) = vaquita.getRoundInfo("round1");
         assertEq(uint(status), uint(Vaquita.RoundStatus.Active));
     }
 
     function testWithdrawTurn() public {
         vm.prank(alice);
-        vaquita.initializeRound(1, 100e18, IERC20(address(token)), 3, 7 days, 1);
+        vaquita.initializeRound("round1", 100e18, IERC20(address(token)), 3, 7 days, 1);
         
         vm.prank(bob);
-        vaquita.addPlayer(1, 2);
+        vaquita.addPlayer("round1", 2);
         
         vm.prank(charlie);
-        vaquita.addPlayer(1, 3);
+        vaquita.addPlayer("round1", 3);
         
         vm.prank(bob);
-        vaquita.payTurn(1, 1);
+        vaquita.payTurn("round1", 1);
         
         vm.prank(charlie);
-        vaquita.payTurn(1, 1);
+        vaquita.payTurn("round1", 1);
         
         uint256 balanceBefore = token.balanceOf(alice);
         
         vm.prank(alice);
-        vaquita.withdrawTurn(1);
+        vaquita.withdrawTurn("round1");
         
         uint256 balanceAfter = token.balanceOf(alice);
         assertEq(balanceAfter - balanceBefore, 200e18);
@@ -106,36 +106,36 @@ contract VaquitaTest is Test {
 
     function testWithdrawCollateral() public {
         vm.prank(alice);
-        vaquita.initializeRound(1, 100e18, IERC20(address(token)), 3, 7 days, 1);
+        vaquita.initializeRound("round1", 100e18, IERC20(address(token)), 3, 7 days, 1);
         
         vm.prank(bob);
-        vaquita.addPlayer(1, 2);
+        vaquita.addPlayer("round1", 2);
         
         vm.prank(charlie);
-        vaquita.addPlayer(1, 3);
+        vaquita.addPlayer("round1", 3);
         
         vm.prank(bob);
-        vaquita.payTurn(1, 1);
+        vaquita.payTurn("round1", 1);
         
         vm.prank(charlie);
-        vaquita.payTurn(1, 1);
+        vaquita.payTurn("round1", 1);
         
         vm.prank(alice);
-        vaquita.payTurn(1, 2);
+        vaquita.payTurn("round1", 2);
         
         vm.prank(charlie);
-        vaquita.payTurn(1, 2);
+        vaquita.payTurn("round1", 2);
         
         vm.prank(alice);
-        vaquita.payTurn(1, 3);
+        vaquita.payTurn("round1", 3);
         
         vm.prank(bob);
-        vaquita.payTurn(1, 3);
+        vaquita.payTurn("round1", 3);
         
         uint256 balanceBefore = token.balanceOf(alice);
         
         vm.prank(alice);
-        vaquita.withdrawCollateral(1);
+        vaquita.withdrawCollateral("round1");
         
         uint256 balanceAfter = token.balanceOf(alice);
         assertEq(balanceAfter - balanceBefore, 300e18);
@@ -143,31 +143,31 @@ contract VaquitaTest is Test {
 
     function testCannotPayOwnTurn() public {
         vm.prank(alice);
-        vaquita.initializeRound(1, 100e18, IERC20(address(token)), 3, 7 days, 1);
+        vaquita.initializeRound("round1", 100e18, IERC20(address(token)), 3, 7 days, 1);
         
         vm.prank(bob);
-        vaquita.addPlayer(1, 2);
+        vaquita.addPlayer("round1", 2);
         
         vm.prank(charlie);
-        vaquita.addPlayer(1, 3);
+        vaquita.addPlayer("round1", 3);
         
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSignature("CannotPayOwnTurn()"));
-        vaquita.payTurn(1, 1);
+        vaquita.payTurn("round1", 1);
     }
 
     function testCannotWithdrawBeforeCompleted() public {
         vm.prank(alice);
-        vaquita.initializeRound(1, 100e18, IERC20(address(token)), 3, 7 days, 1);
+        vaquita.initializeRound("round1", 100e18, IERC20(address(token)), 3, 7 days, 1);
         
         vm.prank(bob);
-        vaquita.addPlayer(1, 2);
+        vaquita.addPlayer("round1", 2);
         
         vm.prank(charlie);
-        vaquita.addPlayer(1, 3);
+        vaquita.addPlayer("round1", 3);
         
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSignature("RoundNotCompleted()"));
-        vaquita.withdrawCollateral(1);
+        vaquita.withdrawCollateral("round1");
     }
 }
