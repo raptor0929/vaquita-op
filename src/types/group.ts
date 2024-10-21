@@ -1,21 +1,21 @@
-import { EntityDocument } from '@/types/commons';
+import { EntityDocument } from "@/types/commons";
 
 export enum GroupStatus {
-  PENDING = 'pending',
-  ACTIVE = 'active',
-  CONCLUDED = 'concluded',
-  ABANDONED = 'abandoned',
+  PENDING = "pending",
+  ACTIVE = "active",
+  CONCLUDED = "concluded",
+  ABANDONED = "abandoned",
 }
 
 export enum GroupCrypto {
-  USDC = 'USDC',
-  SOL = 'SOL',
+  USDC = "USDC",
+  SOL = "SOL",
 }
 
 export enum GroupPeriod {
-  MONTHLY = 'monthly',
-  WEEKLY = 'weekly',
-  ALL = 'all',
+  MONTHLY = "monthly",
+  WEEKLY = "weekly",
+  ALL = "all",
 }
 
 export interface GroupMember {
@@ -46,7 +46,7 @@ export interface GroupBaseDocument {
   amount: number;
   collateralAmount: number;
   totalMembers: number;
-  members: { [key: string]: GroupMember };
+  // members: { [key: string]: GroupMember };
   period: GroupPeriod;
   startsOnTimestamp: number;
   memberPositions: number[];
@@ -55,12 +55,12 @@ export interface GroupBaseDocument {
 export interface GroupCreateDTO
   extends Pick<
     GroupBaseDocument,
-    | 'name'
-    | 'amount'
-    | 'crypto'
-    | 'totalMembers'
-    | 'period'
-    | 'startsOnTimestamp'
+    | "name"
+    | "amount"
+    | "crypto"
+    | "totalMembers"
+    | "period"
+    | "startsOnTimestamp"
   > {
   customerPublicKey: string;
 }
@@ -73,9 +73,9 @@ export interface GroupDepositDTO {
 }
 
 export enum GroupWithdrawalType {
-  COLLATERAL = 'collateral',
-  INTEREST = 'interest',
-  ROUND = 'round',
+  COLLATERAL = "collateral",
+  INTEREST = "interest",
+  ROUND = "round",
 }
 
 export interface GroupWithdrawalDTO {
