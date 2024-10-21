@@ -49,7 +49,7 @@ export default function GroupTablePayments({
         throw new Error("transaction error");
       }
       // await depositGroupPayment(group.id, publicKey, tx, round, amount);
-      await depositGroupPayment(group.id, "", tx, round, amount);
+      await depositGroupPayment(group.id, "0x", tx, round, amount);
       await refetch();
     } catch (error) {
       logError(LogLevel.INFO)(error);
