@@ -7,14 +7,15 @@ import LoadingSpinner from '@/components/global/LoadingSpinner/LoadingSpinner';
 import GroupTablePayments from '@/components/group/GroupTablePayments/GroupTablePayments';
 import { useGroup } from '@/hooks';
 import { GroupResponseDTO } from '@/types';
-import { useAccount } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
+import { useAccount } from 'wagmi';
 
 const PaymentsPage = () => {
   const router = useRouter();
-  const { groupId } = useParams();
+  const searchParams = useSearchParams();
+  const groupId = searchParams.get('groupId');
   const { address } = useAccount();
   const { getGroup } = useGroup();
   const {
@@ -28,12 +29,12 @@ const PaymentsPage = () => {
     content: GroupResponseDTO;
   }>({
     enabled: !!address,
-    queryKey: ['group', address],
+    queryKey: [ 'group', address ],
     queryFn: () => getGroup(groupId as string, address!),
   });
-
+  
   const loading = isPendingData || isLoadingData || isFetchingData;
-
+  
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -43,7 +44,7 @@ const PaymentsPage = () => {
   if (!address) {
     return <ErrorView />;
   }
-
+  
   return (
     <>
       <TabTitleHeader text="Group Information" />

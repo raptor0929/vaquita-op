@@ -1,23 +1,17 @@
-import { GroupTablePaymentItem } from "@/components/group/GroupTablePayments/GroupTablePayments.types";
-import {
-  GroupDocument,
-  GroupPeriod,
-  GroupResponseDTO,
-  GroupStatus,
-  GroupWithdrawalType,
-} from "@/types";
-import { addMonths, addWeeks } from "date-fns";
+import { GroupTablePaymentItem } from '@/components/group/GroupTablePayments/GroupTablePayments.types';
+import { GroupPeriod, GroupResponseDTO } from '@/types';
+import { addMonths, addWeeks } from 'date-fns';
 
 export const getPaymentsTable = (
   group: Pick<
     GroupResponseDTO,
-    | "startsOnTimestamp"
-    | "totalMembers"
-    | "period"
-    | "amount"
-    | "myDeposits"
-    | "myPosition"
-  >
+    | 'startsOnTimestamp'
+    | 'totalMembers'
+    | 'period'
+    | 'amount'
+    | 'myDeposits'
+    | 'myPosition'
+  >,
 ) => {
   const items: GroupTablePaymentItem[] = [];
   let startDate = new Date(group.startsOnTimestamp || 0);
@@ -34,16 +28,16 @@ export const getPaymentsTable = (
       currentPosition = i + 1;
     }
     const round = i + 1;
-
+    
     items.push({
       round,
       amount: group.amount || 0,
       paymentDeadlineTimestamp: endDate.getTime(),
       status: group.myDeposits[round]?.successfullyDeposited
-        ? "Paid"
+        ? 'Paid'
         : firstUnpaidItemIndex === -1
-          ? "Pay"
-          : "Pending",
+          ? 'Pay'
+          : 'Pending',
     });
     if (
       firstUnpaidItemIndex === -1 &&
@@ -54,6 +48,6 @@ export const getPaymentsTable = (
     }
     startDate = endDate;
   }
-
+  
   return { items, firstUnpaidItemIndex, currentPosition };
 };
