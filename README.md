@@ -1,6 +1,21 @@
-# Vaquita
+# Protocol Vaquita
 
-Sepolia Base contract: [0x8522D7762A8C3a71ddf5f52b6DA19849BAB87F1d](https://sepolia.basescan.org/address/0x8522D7762A8C3a71ddf5f52b6DA19849BAB87F1d)
+![Texto alternativo](/vaquina.png)
+
+Protocol Vaquinha is a community savings protocol inspired by the traditional Andean savings system known as Pasanaku. This protocol leverages blockchain technology to solve trust issues, allowing users to organize and participate in group savings systems with complete transparency and security. Vaquinha Protocol scales these traditional systems to the digital world, providing global access to communities that need reliable shared savings solutions.
+
+## 🌐 Resources
+
+- 🚀 **Demo:** Check out the live demo of the project [here](https://vaquita-psi.vercel.app/)
+- 🎥 **Pitch Deck:** This is the pitch deck for the project, providing a concise overview of its key elements. It helps to understand the problem, solution, business model, and overall impact more clearly. [Watch the Pitch Deck](https://www.loom.com/share/15fc8cf534db4c16beb92dab2e8d7879?sid=e9c3014d-ae1e-44f1-90dc-107cba3aa933)
+- 💻 **Sepolia Base contract:** `0x8522D7762A8C3a71ddf5f52b6DA19849BAB87F1d` — View the [Vaquinta Program](https://sepolia.basescan.org/address/0x8522D7762A8C3a71ddf5f52b6DA19849BAB87F1d).
+
+  **Methods:**
+
+  - 🏁 `initializeRound`: Creates a new Round and adds collateral.
+  - 🙋‍♂️ `addPlayer`: Adds a player to the round and their collateral.
+  - 💰 `payTurn`: Pays the current turn in the round.
+ 
 
 ## Setup
 
