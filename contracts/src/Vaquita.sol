@@ -25,7 +25,7 @@ contract Vaquita {
         mapping(address => uint8) positions;
     }
 
-    mapping(uint256 roundId => Round round) private _rounds;
+    mapping(string roundId => Round round) private _rounds;
 
     error RoundAlreadyExists();
     error RoundNotPending();
@@ -39,21 +39,21 @@ contract Vaquita {
     error InsufficientFunds();
     error CollateralAlreadyWithdrawn();
 
-    event RoundInitialized(uint256 indexed roundId, address initializer);
-    event PlayerAdded(uint256 indexed roundId, address player);
-    event TurnPaid(uint256 indexed roundId, address payer, uint8 turn);
-    event TurnWithdrawn(uint256 indexed roundId, address player, uint256 amount);
-    event CollateralWithdrawn(uint256 indexed roundId, address player, uint256 amount);
+    event RoundInitialized(string indexed roundId, address initializer);
+    event PlayerAdded(string indexed roundId, address player);
+    event TurnPaid(string indexed roundId, address payer, uint8 turn);
+    event TurnWithdrawn(string indexed roundId, address player, uint256 amount);
+    event CollateralWithdrawn(string indexed roundId, address player, uint256 amount);
 
     function initializeRound(
-        uint256 roundId,
+        string calldata roundId,
         uint256 paymentAmount,
         IERC20 token,
         uint8 numberOfPlayers,
         uint256 frequencyOfTurns,
         uint8 position
     ) external {
-        if (_rounds[roundId].token != IERC20(address(0))) {
+        if (address(_rounds[roundId].token) != address(0)) {
             revert RoundAlreadyExists();
         }
 
@@ -78,7 +78,7 @@ contract Vaquita {
         emit RoundInitialized(roundId, msg.sender);
     }
 
-    function addPlayer(uint256 roundId, uint8 position) external {
+    function addPlayer(string calldata roundId, uint8 position) external {
         Round storage round = _rounds[roundId];
         if (round.status != RoundStatus.Pending) {
             revert RoundNotPending();
@@ -102,7 +102,7 @@ contract Vaquita {
         emit PlayerAdded(roundId, msg.sender);
     }
 
-    function payTurn(uint256 roundId, uint8 turn) external {
+    function payTurn(string calldata roundId, uint8 turn) external {
         Round storage round = _rounds[roundId];
         if (round.status != RoundStatus.Active) {
             revert RoundNotActive();
@@ -144,7 +144,7 @@ contract Vaquita {
         emit TurnPaid(roundId, msg.sender, turn);
     }
 
-    function withdrawTurn(uint256 roundId) external {
+    function withdrawTurn(string calldata roundId) external {
         Round storage round = _rounds[roundId];
         if (round.status != RoundStatus.Active && round.status != RoundStatus.Completed) {
             revert RoundNotActive();
@@ -164,7 +164,7 @@ contract Vaquita {
         emit TurnWithdrawn(roundId, msg.sender, expectedAmount);
     }
 
-    function withdrawCollateral(uint256 roundId) external {
+    function withdrawCollateral(string calldata roundId) external {
         Round storage round = _rounds[roundId];
         if (round.status != RoundStatus.Completed) {
             revert RoundNotCompleted();
@@ -180,7 +180,7 @@ contract Vaquita {
         emit CollateralWithdrawn(roundId, msg.sender, withdrawAmount);
     }
 
-    function getRoundInfo(uint256 roundId) external view returns (
+    function getRoundInfo(string calldata roundId) external view returns (
         uint256 paymentAmount,
         address tokenAddress,
         uint8 numberOfPlayers,

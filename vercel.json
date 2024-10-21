@@ -1,0 +1,7 @@
+{
+    "git": {
+      "submodules": true
+    },
+    "buildCommand": "bun run build",
+    "outputDirectory": "dist/.next"
+  }
