@@ -7,7 +7,7 @@ describe('useVaquitaContract', () => {
     const contract = useVaquitaContract();
     expect(contract).toEqual({
       abi: VaquitaABI,
-      address: '0xe5a822FC8D92FBFb0E1f0ED1B096E3318B6D4702',
+      address: '0x8522D7762A8C3a71ddf5f52b6DA19849BAB87F1d',
       status: 'ready',
       supportedChains: [baseSepolia],
     });

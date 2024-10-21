@@ -54,7 +54,7 @@ export const useVaquinhaDeposit = () => {
       
       try {
         // First, approve the contract to spend tokens
-        const approved = await approveTokens(paymentAmount);
+        const approved = await approveTokens(paymentAmount * BigInt(group.slots));
         if (!approved) {
           throw new Error("Token approval failed");
         }
@@ -92,7 +92,7 @@ export const useVaquinhaDeposit = () => {
       
       try {
         // First, approve the contract to spend tokens
-        const approved = await approveTokens(paymentAmount);
+        const approved = await approveTokens(paymentAmount * BigInt(group.slots));
         if (!approved) {
           throw new Error("Token approval failed");
         }
