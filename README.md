@@ -1,6 +1,6 @@
 # Vaquita
 
-Sepolia Base contract: [0xe5a822FC8D92FBFb0E1f0ED1B096E3318B6D4702](https://sepolia.basescan.org/address/0xe5a822fc8d92fbfb0e1f0ed1b096e3318b6d4702)
+Sepolia Base contract: [0x8522D7762A8C3a71ddf5f52b6DA19849BAB87F1d](https://sepolia.basescan.org/address/0x8522D7762A8C3a71ddf5f52b6DA19849BAB87F1d)
 
 ## Setup
 
