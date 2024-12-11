@@ -1,4 +1,4 @@
-import { baseSepolia } from 'viem/chains';
+import { optimismSepolia } from 'viem/chains';
 import { generateContractHook } from '../../hooks/contracts';
 import { VAQUITA_CONTRACT_ADDRESS } from '../../../src/constants';
 import VaquitaABI from './VaquitaABI';
@@ -8,8 +8,8 @@ import VaquitaABI from './VaquitaABI';
  */
 export const useVaquitaContract = generateContractHook({
   abi: VaquitaABI,
-  [baseSepolia.id]: {
-    chain: baseSepolia,
+  [optimismSepolia.id]: {
+    chain: optimismSepolia,
     address: VAQUITA_CONTRACT_ADDRESS,
   },
 

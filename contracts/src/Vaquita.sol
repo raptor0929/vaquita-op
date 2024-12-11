@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.25;
+pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -25,7 +25,7 @@ contract Vaquita {
         mapping(address => uint8) positions;
     }
 
-    mapping(string roundId => Round round) private _rounds;
+    mapping(string roundId => Round round) public _rounds;
 
     error RoundAlreadyExists();
     error RoundNotPending();

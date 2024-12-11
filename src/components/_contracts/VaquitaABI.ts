@@ -1,180 +1,369 @@
 const abi = [
     {
-      type: "function",
-      name: "addPlayer",
-      inputs: [
-        { name: "roundId", type: "string", internalType: "string" },
-        { name: "position", type: "uint8", internalType: "uint8" }
+      "inputs": [],
+      "name": "CannotPayOwnTurn",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "CollateralAlreadyWithdrawn",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientFunds",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidTurn",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RoundAlreadyExists",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RoundFull",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RoundNotActive",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RoundNotCompleted",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RoundNotPending",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TurnAlreadyPaid",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TurnAlreadyWithdrawn",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "player",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
       ],
-      outputs: [],
-      stateMutability: "nonpayable"
+      "name": "CollateralWithdrawn",
+      "type": "event"
     },
     {
-      type: "function",
-      name: "getRoundInfo",
-      inputs: [
-        { name: "roundId", type: "string", internalType: "string" }
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "player",
+          "type": "address"
+        }
       ],
-      outputs: [
-        { name: "paymentAmount", type: "uint256", internalType: "uint256" },
-        { name: "tokenAddress", type: "address", internalType: "address" },
-        { name: "numberOfPlayers", type: "uint8", internalType: "uint8" },
-        { name: "totalAmountLocked", type: "uint256", internalType: "uint256" },
-        { name: "availableSlots", type: "uint8", internalType: "uint8" },
-        { name: "frequencyOfTurns", type: "uint256", internalType: "uint256" },
-        { name: "status", type: "uint8", internalType: "enum Vaquita.RoundStatus" }
+      "name": "PlayerAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "initializer",
+          "type": "address"
+        }
       ],
-      stateMutability: "view"
+      "name": "RoundInitialized",
+      "type": "event"
     },
     {
-      type: "function",
-      name: "initializeRound",
-      inputs: [
-        { name: "roundId", type: "string", internalType: "string" },
-        { name: "paymentAmount", type: "uint256", internalType: "uint256" },
-        { name: "token", type: "address", internalType: "contract IERC20" },
-        { name: "numberOfPlayers", type: "uint8", internalType: "uint8" },
-        { name: "frequencyOfTurns", type: "uint256", internalType: "uint256" },
-        { name: "position", type: "uint8", internalType: "uint8" }
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "payer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "turn",
+          "type": "uint8"
+        }
       ],
-      outputs: [],
-      stateMutability: "nonpayable"
+      "name": "TurnPaid",
+      "type": "event"
     },
     {
-      type: "function",
-      name: "payTurn",
-      inputs: [
-        { name: "roundId", type: "string", internalType: "string" },
-        { name: "turn", type: "uint8", internalType: "uint8" }
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "player",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
       ],
-      outputs: [],
-      stateMutability: "nonpayable"
+      "name": "TurnWithdrawn",
+      "type": "event"
     },
     {
-      type: "function",
-      name: "withdrawCollateral",
-      inputs: [
-        { name: "roundId", type: "string", internalType: "string" }
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        }
       ],
-      outputs: [],
-      stateMutability: "nonpayable"
-    },
-    {
-      type: "function",
-      name: "withdrawTurn",
-      inputs: [
-        { name: "roundId", type: "string", internalType: "string" }
+      "name": "_rounds",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "paymentAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint8",
+          "name": "numberOfPlayers",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalAmountLocked",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "availableSlots",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "frequencyOfTurns",
+          "type": "uint256"
+        },
+        {
+          "internalType": "enum Vaquita.RoundStatus",
+          "name": "status",
+          "type": "uint8"
+        }
       ],
-      outputs: [],
-      stateMutability: "nonpayable"
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-      type: "event",
-      name: "CollateralWithdrawn",
-      inputs: [
-        { name: "roundId", type: "string", indexed: true, internalType: "string" },
-        { name: "player", type: "address", indexed: false, internalType: "address" },
-        { name: "amount", type: "uint256", indexed: false, internalType: "uint256" }
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint8",
+          "name": "position",
+          "type": "uint8"
+        }
       ],
-      anonymous: false
+      "name": "addPlayer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
-      type: "event",
-      name: "PlayerAdded",
-      inputs: [
-        { name: "roundId", type: "string", indexed: true, internalType: "string" },
-        { name: "player", type: "address", indexed: false, internalType: "address" }
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        }
       ],
-      anonymous: false
-    },
-    {
-      type: "event",
-      name: "RoundInitialized",
-      inputs: [
-        { name: "roundId", type: "string", indexed: true, internalType: "string" },
-        { name: "initializer", type: "address", indexed: false, internalType: "address" }
+      "name": "getRoundInfo",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "paymentAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "tokenAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint8",
+          "name": "numberOfPlayers",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalAmountLocked",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "availableSlots",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "frequencyOfTurns",
+          "type": "uint256"
+        },
+        {
+          "internalType": "enum Vaquita.RoundStatus",
+          "name": "status",
+          "type": "uint8"
+        }
       ],
-      anonymous: false
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-      type: "event",
-      name: "TurnPaid",
-      inputs: [
-        { name: "roundId", type: "string", indexed: true, internalType: "string" },
-        { name: "payer", type: "address", indexed: false, internalType: "address" },
-        { name: "turn", type: "uint8", indexed: false, internalType: "uint8" }
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "paymentAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint8",
+          "name": "numberOfPlayers",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "frequencyOfTurns",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "position",
+          "type": "uint8"
+        }
       ],
-      anonymous: false
+      "name": "initializeRound",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
-      type: "event",
-      name: "TurnWithdrawn",
-      inputs: [
-        { name: "roundId", type: "string", indexed: true, internalType: "string" },
-        { name: "player", type: "address", indexed: false, internalType: "address" },
-        { name: "amount", type: "uint256", indexed: false, internalType: "uint256" }
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint8",
+          "name": "turn",
+          "type": "uint8"
+        }
       ],
-      anonymous: false
+      "name": "payTurn",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
-      type: "error",
-      name: "CannotPayOwnTurn",
-      inputs: []
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        }
+      ],
+      "name": "withdrawCollateral",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
-      type: "error",
-      name: "CollateralAlreadyWithdrawn",
-      inputs: []
-    },
-    {
-      type: "error",
-      name: "InsufficientFunds",
-      inputs: []
-    },
-    {
-      type: "error",
-      name: "InvalidTurn",
-      inputs: []
-    },
-    {
-      type: "error",
-      name: "RoundAlreadyExists",
-      inputs: []
-    },
-    {
-      type: "error",
-      name: "RoundFull",
-      inputs: []
-    },
-    {
-      type: "error",
-      name: "RoundNotActive",
-      inputs: []
-    },
-    {
-      type: "error",
-      name: "RoundNotCompleted",
-      inputs: []
-    },
-    {
-      type: "error",
-      name: "RoundNotPending",
-      inputs: []
-    },
-    {
-      type: "error",
-      name: "SafeERC20FailedOperation",
-      inputs: [{ name: "token", type: "address", internalType: "address" }]
-    },
-    {
-      type: "error",
-      name: "TurnAlreadyPaid",
-      inputs: []
-    },
-    {
-      type: "error",
-      name: "TurnAlreadyWithdrawn",
-      inputs: []
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "roundId",
+          "type": "string"
+        }
+      ],
+      "name": "withdrawTurn",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ] as const;
   

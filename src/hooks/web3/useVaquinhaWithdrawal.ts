@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useWriteContracts } from "wagmi/experimental";
 import { useVaquitaContract } from "../../components/_contracts/useVaquitaContract";
 import {
-  BASE_SEPOLIA_USDC,
+  OP_SEPOLIA_USDC,
   USDC_DECIMALS,
   VAQUITA_CONTRACT_ADDRESS,
 } from "../../constants";

@@ -1,15 +1,17 @@
 import { GroupResponseDTO } from "@/types";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useWriteContract, useWaitForTransactionReceipt, useAccount } from "wagmi";
+import { getPublicClient } from '@wagmi/core';
+import { useWagmiConfig } from "@/wagmi";
 import { useVaquitaContract } from "../../components/_contracts/useVaquitaContract";
 import {
-  BASE_SEPOLIA_USDC,
+  OP_SEPOLIA_USDC,
   USDC_DECIMALS,
   VAQUITA_CONTRACT_ADDRESS,
 } from "../../constants";
 import erc20Abi from "./ERC20ABI";
 
-const convertFrequencyToTimestamp = (period: any): bigint => {
+const convertFrequencyToTimestamp: any = (period: any): bigint => {
   const SECONDS_PER_DAY = 86400; // 24 hours * 60 minutes * 60 seconds
   const frequencyInDays = period === "weekly" ? 7 : 30;
   const frequencyInSeconds = frequencyInDays * SECONDS_PER_DAY;
@@ -20,7 +22,9 @@ export const useVaquinhaDeposit = () => {
   const { address } = useAccount();
   const { writeContract, writeContractAsync } = useWriteContract();
   const contract = useVaquitaContract();
-  const {  } = useWaitForTransactionReceipt();
+
+  const wagmiConfig = useWagmiConfig();
+  const client = getPublicClient(wagmiConfig);
 
   const approveTokens = useCallback(async (amount: bigint) => {
     if (!address) {
@@ -29,12 +33,17 @@ export const useVaquinhaDeposit = () => {
 
     try {
       const hash = await writeContractAsync({
-        address: BASE_SEPOLIA_USDC,
+        address: OP_SEPOLIA_USDC,
         abi: erc20Abi,
         functionName: 'approve',
         args: [VAQUITA_CONTRACT_ADDRESS, amount],
       });
       console.log({hash});
+      const receipt = await client.waitForTransactionReceipt({
+        hash,
+        confirmations: 3
+      });
+      console.log({receipt});
       return true;
     } catch (error) {
       console.error("Error approving tokens:", error);
@@ -50,16 +59,14 @@ export const useVaquinhaDeposit = () => {
       const paymentAmount = BigInt(group.amount * USDC_DECIMALS);
       const numberOfPlayers = group.totalMembers;
       const frequencyOfTurns = convertFrequencyToTimestamp(group.period);
-      const tokenMintAddress = BASE_SEPOLIA_USDC; // Circle USDC
+      const tokenMintAddress = OP_SEPOLIA_USDC;
       
       try {
-        // First, approve the contract to spend tokens
         const approved = await approveTokens(paymentAmount * BigInt(group.totalMembers));
         if (!approved) {
           throw new Error("Token approval failed");
         }
 
-        // Then, call the contract function
         const hash = await writeContractAsync({
           address: VAQUITA_CONTRACT_ADDRESS,
           abi: contract.abi,
@@ -70,10 +77,15 @@ export const useVaquinhaDeposit = () => {
             tokenMintAddress,
             numberOfPlayers,
             frequencyOfTurns,
-            group.myPosition,
+            group.myPosition - 1,
           ],
         });
         console.log({hash});
+        const receipt = await client.waitForTransactionReceipt({
+          hash,
+          confirmations: 3
+        });
+        console.log({receipt});
         return { tx: hash, error: null, success: true };
       } catch (error) {
         console.error("Error in depositCollateralAndCreate:", error);
@@ -91,18 +103,16 @@ export const useVaquinhaDeposit = () => {
       const paymentAmount = BigInt(group.amount * USDC_DECIMALS);
       
       try {
-        // First, approve the contract to spend tokens
         const approved = await approveTokens(paymentAmount * BigInt(group.totalMembers));
         if (!approved) {
           throw new Error("Token approval failed");
         }
 
-        // Then, call the contract function
         const hash = await writeContractAsync({
           address: VAQUITA_CONTRACT_ADDRESS,
           abi: contract.abi,
           functionName: "addPlayer",
-          args: [group.id, group.myPosition],
+          args: [group.id, group.myPosition - 1],
         });
         console.log({hash});
         return { tx: hash, error: null, success: true };
