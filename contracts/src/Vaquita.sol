@@ -23,6 +23,9 @@ contract Vaquita {
         mapping(address => uint256) paidTurns;
         mapping(address => bool) withdrawnTurns;
         mapping(address => uint8) positions;
+        mapping(address => bool) withdrawnInterest;
+        uint256 startTimestamp;
+        uint256 endTimestamp;
     }
 
     mapping(string roundId => Round round) public _rounds;
@@ -38,12 +41,14 @@ contract Vaquita {
     error TurnAlreadyWithdrawn();
     error InsufficientFunds();
     error CollateralAlreadyWithdrawn();
+    error InterestAlreadyWithdrawn();
 
     event RoundInitialized(string indexed roundId, address initializer);
     event PlayerAdded(string indexed roundId, address player);
     event TurnPaid(string indexed roundId, address payer, uint8 turn);
     event TurnWithdrawn(string indexed roundId, address player, uint256 amount);
     event CollateralWithdrawn(string indexed roundId, address player, uint256 amount);
+    event InterestWithdrawn(string indexed roundId, address player, uint256 amount);
 
     function initializeRound(
         string calldata roundId,
@@ -66,6 +71,7 @@ contract Vaquita {
         round.availableSlots = numberOfPlayers;
         round.frequencyOfTurns = frequencyOfTurns;
         round.status = RoundStatus.Pending;
+        round.startTimestamp = block.timestamp;
 
         uint256 amountToLock = paymentAmount * numberOfPlayers;
         token.safeTransferFrom(msg.sender, address(this), amountToLock);
@@ -139,6 +145,7 @@ contract Vaquita {
         }
         if (allTurnsCompleted) {
             round.status = RoundStatus.Completed;
+            round.endTimestamp = block.timestamp;
         }
 
         emit TurnPaid(roundId, msg.sender, turn);
@@ -178,6 +185,33 @@ contract Vaquita {
         round.withdrawnCollateral[msg.sender] = true;
 
         emit CollateralWithdrawn(roundId, msg.sender, withdrawAmount);
+    }
+
+    function withdrawInterest(string calldata roundId) external {
+        Round storage round = _rounds[roundId];
+        if (round.status != RoundStatus.Completed) {
+            revert RoundNotCompleted();
+        }
+        if (round.withdrawnInterest[msg.sender]) {
+            revert InterestAlreadyWithdrawn();
+        }
+
+        uint256 position = round.positions[msg.sender];
+        uint256 apy = 12; // 12% APY
+        uint256 secondsPerDay = 86400;
+        uint256 secondsPerYear = secondsPerDay * 365;
+        uint256 secondsPlayed = round.endTimestamp - round.startTimestamp;
+        uint256 calcInterest = (secondsPlayed * 1e18) / secondsPerYear; // Using fixed point for precision
+        uint256 baseInterestOfRound = (round.totalAmountLocked * (apy/2) * calcInterest) / (100 * 1e18);
+        uint256 baseInterestOfPlayer = baseInterestOfRound / round.numberOfPlayers;
+        uint256 numberOfPositions = (round.numberOfPlayers * (round.numberOfPlayers - 1)) / 2;
+        uint256 variableInterestOfPlayer = (baseInterestOfRound * position) / numberOfPositions;
+        uint256 interestAmount = baseInterestOfPlayer + variableInterestOfPlayer;
+
+        round.token.safeTransfer(msg.sender, interestAmount);
+        round.withdrawnInterest[msg.sender] = true;
+
+        emit InterestWithdrawn(roundId, msg.sender, interestAmount);
     }
 
     function getRoundInfo(string calldata roundId) external view returns (

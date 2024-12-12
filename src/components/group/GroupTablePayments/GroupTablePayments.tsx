@@ -9,6 +9,7 @@ import { logError } from "@/utils/log";
 // import { useWallet } from '@solana/wallet-adapter-react';
 import React, { useState } from "react";
 import { GroupTablePaymentsProps } from "./GroupTablePayments.types";
+import { useAccount } from 'wagmi';
 
 export default function GroupTablePayments({
   group,
@@ -18,6 +19,7 @@ export default function GroupTablePayments({
   // const { publicKey } = useWallet();
   const { depositRoundPayment } = useVaquinhaDeposit();
   const { depositGroupPayment } = useGroup();
+  const { address } = useAccount();
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -49,7 +51,8 @@ export default function GroupTablePayments({
         throw new Error("transaction error");
       }
       // await depositGroupPayment(group.id, publicKey, tx, round, amount);
-      await depositGroupPayment(group.id, "0x", tx, round, amount);
+      console.log('saving payment', group.id, address, tx, round, amount);
+      await depositGroupPayment(group.id, address as `0x${string}`, tx, round, amount);
       await refetch();
     } catch (error) {
       logError(LogLevel.INFO)(error);

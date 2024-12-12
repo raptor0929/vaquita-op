@@ -41,7 +41,7 @@ export const useVaquinhaDeposit = () => {
       console.log({hash});
       const receipt = await client.waitForTransactionReceipt({
         hash,
-        confirmations: 3
+        confirmations: 5
       });
       console.log({receipt});
       return true;
@@ -83,7 +83,7 @@ export const useVaquinhaDeposit = () => {
         console.log({hash});
         const receipt = await client.waitForTransactionReceipt({
           hash,
-          confirmations: 3
+          confirmations: 5
         });
         console.log({receipt});
         return { tx: hash, error: null, success: true };
@@ -115,6 +115,11 @@ export const useVaquinhaDeposit = () => {
           args: [group.id, group.myPosition - 1],
         });
         console.log({hash});
+        const receipt = await client.waitForTransactionReceipt({
+          hash,
+          confirmations: 5
+        });
+        console.log({receipt});
         return { tx: hash, error: null, success: true };
       } catch (error) {
         console.error("Error in depositCollateralAndJoin:", error);
@@ -147,6 +152,11 @@ export const useVaquinhaDeposit = () => {
           args: [group.id, turn],
         });
         console.log({hash});
+        const receipt = await client.waitForTransactionReceipt({
+          hash,
+          confirmations: 5
+        });
+        console.log({receipt});
         return { tx: hash, error: null, success: true };
       } catch (error) {
         console.error("Error in depositRoundPayment:", error);
